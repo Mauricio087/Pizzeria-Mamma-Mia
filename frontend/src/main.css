@@ -1,0 +1,31 @@
+.header{
+    background: linear-gradient(rgba(0, 0, 0.3, 0.6),rgba(0, 0, 0.2, 0.6)),
+    url(./assets/Header.jpg);
+    color: white;
+    align-items: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    height: 35vh;
+    justify-content: center;
+}
+
+nav {
+    font-size: 1.4vw;
+    text-align: center;
+    & .nav-link {
+        padding: .3vh;
+    }
+    & .total {
+        font-size: 1.4vw;
+    }
+}
+
+
+footer {
+    margin: auto 0;
+    padding: 1em;
+    bottom: 0;
+    width: 100%;
+}
+
