@@ -1,8 +1,33 @@
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 
-const CardPizza = ({ name, price, ingredients, img, desc, pizza }) => {
+const CardPizza = ({ pizza }) => {
+  const {id} = useParams();  //aca tambien obtenemos el id de la url
   const { addToCart } = useContext(CartContext);
+  const [detallePizzas, setDetallePizzas] = useState(null);
+
+useEffect (() => {
+  const fetchDetallePizza = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/pizzas/${id}`);
+      const datos = await response.json();
+      setDetallePizzas(datos); //aqui se almacenan los detalles de la pizza
+    }catch (error) {
+      console.error("error al obtener la pizza:",error);
+    }
+  };
+  if (id) {    //si la pizza esta disponible, se hace la solicitud
+    fetchDetallePizza();
+  }
+}, [id]);
+
+  if (!detallePizzas) {
+    return <p className="text-center">Cargando pizza...</p>;
+  }
+
+  const { name, price, ingredients, img, desc } = detallePizzas;
 
   return (
     <div className="col-12 col-sm-6 col-md-3 d-flex justify-content-center">
