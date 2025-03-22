@@ -1,24 +1,21 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 const Pizza = () => {
-  const {id} = useParams(); // esta linea es para obtener el id de la url
   const [pizza, setPizza] = useState(null);
 
   useEffect(() => {
     const fetchPizza = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/pizzas/${id}`); //agregamos el id a la url
+        const response = await fetch("http://localhost:5000/api/pizzas/p001");
         const data = await response.json();
         setPizza(data);
       } catch (error) {
         console.error("Error al obtener la pizza:", error);
       }
     };
-    if (id) {   //aca se ejecuta la funcion solo si el id esta presente
-      fetchPizza();
-    }
-  }, [id]); //se vuelve a ejecutar si cambia
+
+    fetchPizza();
+  }, []);
 
   if (!pizza) {
     return <p className="text-center">Cargando pizza...</p>;

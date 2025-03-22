@@ -1,15 +1,9 @@
 import Header from "../components/Header";
 import CardPizza from "../components/CardPizza";
-import { useState,/*  useEffect */ } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Home = () => {
-  const [id, setId] = useState ('')
-  const navigate = useNavigate()
-  const irADescripcion = () => {
-    navigate(`/Pizza/${id}`)
-  }
-  /* const [pizzas, setPizzas] = useState([]);
+  const [pizzas, setPizzas] = useState([]);
 
   useEffect(() => {
     const fetchPizzas = async () => {
@@ -23,7 +17,7 @@ const Home = () => {
     };
 
     fetchPizzas();
-  }, []); */
+  }, []);
 
   return (
     <>
