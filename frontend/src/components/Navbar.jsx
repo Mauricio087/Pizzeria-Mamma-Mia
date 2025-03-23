@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 
 const Navbar = ({ token }) => {
   const { total } = useContext(CartContext);
   const formatNumber = (num) => (num ? num.toLocaleString() : "0");
+  const rutaValida = ({isActive}) => isActive ? "nav-link text-danger border border-warning rounded": "nav-link text-white border border-white rounded mx-2"
+  const carritoValido = ({isActive}) => isActive ? "total btn border border-warning text-danger" : "total btn border border-white text-white"
 
   return (
     <nav className="navbar navbar-expand navbar-light bg-dark">
@@ -23,46 +25,46 @@ const Navbar = ({ token }) => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link to='/' className="nav-link text-white" href="#">
+              <NavLink to='/' className="nav-link text-white" href="#">
                 Pizzería Mamma Mia!
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link to='/' className="nav-link text-white border border-white rounded" href="#">
+              <NavLink to='/' className= {rutaValida} href="#">
                 🍕Home
-              </Link>
+              </NavLink>
             </li>
             {token ? (
               <>
                 <li className="nav-item">
-                  <Link to='/Profile' className="nav-link text-white border border-white rounded mx-2" href="#">
+                  <NavLink to='/Profile' className= {rutaValida} href="#">
                     🔓Profile
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link to='/Logout' className="nav-link text-white border border-white rounded mx-2" href="#">
+                  <NavLink to='/Logout' className= {rutaValida} href="#">
                     🔒Logout
-                  </Link>
+                  </NavLink>
                 </li>
               </>
             ) : (
               <>
                 <li className="nav-item">
-                  <Link to='/Login' className="nav-link text-white border border-white rounded mx-2" href="#">
+                  <NavLink to='/Login' className= {rutaValida} href="#">
                     🔐Login
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link to='/Register' className="nav-link text-white border border-white rounded mx-2" href="#">
+                  <NavLink to='/Register' className= {rutaValida} href="#">
                     🔐Register
-                  </Link>
+                  </NavLink>
                 </li>
               </>
             )}
           </ul>
-          <Link to='/Cart' className="total btn border border-white text-white">
+          <NavLink to='/Cart' className= {carritoValido}>
             🛒 Total: ${formatNumber(total)}
-          </Link>
+          </NavLink>
         </div>
       </div>
     </nav>
