@@ -1,27 +1,21 @@
-import Header from "../components/Header"
-import CardPizza from "../components/CardPizza"
-import { useState, useEffect } from "react"
-//import { pizzas } from "./Pizzas"
+import Header from "../components/Header";
+import CardPizza from "../components/CardPizza";
+import { usePizza } from "../context/PizzaContext";
 
 const Home = () => {
-  const [pizzas, setPizzas] = useState([]);
+  const { pizzas, loading } = usePizza();
 
-  useEffect(() => {
-    const fetchPizzas = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/pizzas");
-        const data = await response.json();
-        setPizzas(data);
-      } catch (error) {
-        console.error("Error al obtener las pizzas:", error);
-      }
-    };
+  if (loading) {
+    return <p className="text-center">Cargando pizzas...</p>;
+  }
 
-    fetchPizzas();
-  }, []);
-  return(
+  if (!pizzas.length) {
+    return <p className="text-center">No se encontraron pizzas</p>;
+  }
+
+  return (
     <>
-      <Header/>
+      <Header />
       <main className="row d-flex justify-content-center gap-4 mx-0 py-5">
         {pizzas.map((pizza) => (
           <CardPizza
@@ -31,11 +25,12 @@ const Home = () => {
             desc={pizza.desc}
             ingredients={pizza.ingredients}
             price={pizza.price}
+            pizza={pizza}
           />
         ))}
       </main>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

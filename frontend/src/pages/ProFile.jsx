@@ -1,5 +1,3 @@
-
-
 const Profile = () => {
   return (
     <div className="container mt-5">

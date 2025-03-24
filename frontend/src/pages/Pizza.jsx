@@ -1,24 +1,30 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const Pizza = () => {
   const [pizza, setPizza] = useState(null);
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchPizza = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/pizzas/p001");
+        const response = await fetch(`http://localhost:5000/api/pizzas/${id}`);
+        if (!response.ok) {
+          throw new Error("Pizza no encontrada");
+        }
         const data = await response.json();
         setPizza(data);
       } catch (error) {
         console.error("Error al obtener la pizza:", error);
+        setPizza(null);
       }
     };
 
     fetchPizza();
-  }, []);
+  }, [id]);
 
   if (!pizza) {
-    return <p className="text-center">Cargando pizza...</p>;
+    return <p className="text-center">Pizza no encontrada</p>;
   }
 
   return (

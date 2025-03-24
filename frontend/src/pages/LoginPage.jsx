@@ -1,63 +1,65 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react';
+import { UserContext } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-    const [user, setUser] = useState({
-      email: '',
-      password: ''
-    })
+  const [user, setUser] = useState({ email: '', password: '' });
+  const { setToken } = useContext(UserContext);
+  const navigate = useNavigate();
 
-    const handleChange = (e) => {
-      setUser({ ...user, [e.target.name]: e.target.value })
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = user;
+
+    if (password.length < 6) {
+      alert('La contraseña debe tener al menos 6 caracteres');
+      return;
     }
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
+    // Simulación de autenticación (reemplazar con llamada real a la API si aplica)
+    setToken('fake-token'); // Simulamos un token exitoso
+    alert('Inicio de sesión exitoso');
+    navigate('/');
+  };
 
-      const { email, password } = user
-
-        if (password.length < 6) {
-          alert('La contraseña debe tener al menos 6 caracteres')
-          return;
-        }
-
-      alert('Inicio de sesión exitoso')
-    }
-
-    return (
-        <div className="card mt-5 mx-auto" style={{ maxWidth: "400px" }}>
-            <div className="card-body">
-              <h5 className="card-title text-center">Iniciar Sesión</h5>
-
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                      <label htmlFor='email' className='form-label'>Email</label>
-                        <input
-                          type='email'
-                          name='email'
-                          value={user.email}
-                          onChange={handleChange}
-                          className='form-control'
-                          placeholder='Introduce el correo'
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor='password' className='form-label'>Contraseña</label>
-                        <input
-                          type='password'
-                          name='password'
-                          value={user.password}
-                          onChange={handleChange}
-                          className='form-control'
-                          placeholder='Introduce tu contraseña'
-                        />
-                    </div>
-
-                    <button type='submit' className='btn btn-primary w-100' disabled={!user.email || !user.password}>Iniciar Sesión</button>
-                </form>
-            </div>
-        </div>
-    );
+  return (
+    <div className="card mt-5 mx-auto" style={{ maxWidth: "400px" }}>
+      <div className="card-body">
+        <h5 className="card-title text-center">Iniciar Sesión</h5>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={user.email}
+              onChange={handleChange}
+              className="form-control"
+              placeholder="Introduce el correo"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">Contraseña</label>
+            <input
+              type="password"
+              name="password"
+              value={user.password}
+              onChange={handleChange}
+              className="form-control"
+              placeholder="Introduce tu contraseña"
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100" disabled={!user.email || !user.password}>
+            Iniciar Sesión
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
-export default LoginPage
+export default LoginPage;

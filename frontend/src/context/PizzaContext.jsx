@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+
 const PizzaContext = createContext();
 
 export const usePizza = () => useContext(PizzaContext);
@@ -10,11 +11,15 @@ export const PizzaProvider = ({ children }) => {
   useEffect(() => {
     const fetchPizzas = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/pizzas');  // Asegúrate de usar tu URL de API
+        const response = await fetch('http://localhost:5000/api/pizzas');
+        if (!response.ok) {
+          throw new Error('Error en la respuesta de la API');
+        }
         const data = await response.json();
         setPizzas(data);
       } catch (error) {
         console.error('Error al obtener las pizzas:', error);
+        setPizzas([]);
       } finally {
         setLoading(false);
       }
