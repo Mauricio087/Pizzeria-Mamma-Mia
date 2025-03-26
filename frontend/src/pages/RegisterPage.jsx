@@ -1,85 +1,51 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { useUser } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
-    const [users, setUsers] = useState({
-      email: '',
-      password: '',
-      confirmPassword: ''
-    })
+  const [inputs, setInputs] = useState({ email: "", password: "", confirmPassword: "" });
+  const { register } = useUser();
+  const navigate = useNavigate();
 
-    const handleChange = (e) => {
-      setUsers({ ...users, [e.target.name]: e.target.value })
+  const handleChange = (e) => {
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (inputs.password !== inputs.confirmPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
     }
-
-    const handleSubmit = async (e) => {
-      e.preventDefault()
-
-      const { email, password, confirmPassword } = users
-
-      if (password.length < 6) {
-        alert('La contraseña debe tener al menos 6 caracteres')
-        return
-      }
-
-      if (password !== confirmPassword) {
-        alert('Las contraseñas no coinciden')
-        return
-      }
-
-      alert('Registro exitoso')
-      setUsers({ email: '', password: '', confirmPassword: ''})
+    try {
+      await register({ email: inputs.email, password: inputs.password });
+      alert("Registro exitoso");
+      navigate("/");
+    } catch (error) {
+      alert("Error en el registro");
     }
+  };
 
-    return (
-        <div className="card mt-5 mx-auto " style={{ maxWidth: "400px" }}>
-            <div className="card-body">
-              <h5 className="card-title text-center">Register</h5>
-
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                      <label htmlFor='email' className='form-label'>Email</label>
-                        <input
-                          type='email'
-                          name='email'
-                          value={users.email}
-                          onChange={handleChange}
-                          className='form-control'
-                          placeholder='Introduce el correo'
-                          required
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor='password' className='form-label'>Password</label>
-                        <input
-                          type='password'
-                          name='password'
-                          value={users.password}
-                          onChange={handleChange}
-                          className='form-control'
-                          placeholder='Introduce tu contraseña'
-                          required
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor='confirmPassword' className='form-label'>Confirm your password</label>
-                        <input
-                          type='password'
-                          name='confirmPassword'
-                          value={users.confirmPassword}
-                          onChange={handleChange}
-                          className='form-control'
-                          placeholder='Confirma tu contraseña'
-                          required
-                        />
-                    </div>
-
-                    <button type='submit' className='btn btn-primary w-100' disabled={!users.email || !users.password || !users.confirmPassword}>Registrar</button>
-                </form>
-            </div>
+  return (
+    <div className="card mt-5 mx-auto" style={{ maxWidth: "400px" }}>
+      <h2 className="card-title text-center">Registro</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className='form-label'>Email:</label>
+          <input type="email" name="email" value={inputs.email} onChange={handleChange} required />
         </div>
-    );
+        <div className="mb-3">
+          <label className='form-label'>Contraseña:</label>
+          <input type="password" name="password" value={inputs.password} onChange={handleChange} required />
+        </div>
+        <div className="mb-3">
+          <label className='form-label'>Confirmar Contraseña:</label>
+          <input type="password" name="confirmPassword" value={inputs.confirmPassword} onChange={handleChange} required />
+        </div>
+        <button type="submit" className='btn btn-primary w-100'>Registrarse</button>
+      </form>
+    </div>
+  );
 };
 
-  export default RegisterPage
+export default RegisterPage;
